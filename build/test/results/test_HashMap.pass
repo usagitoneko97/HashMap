@@ -1,0 +1,16 @@
+---
+:source:
+  :path: test
+  :file: test_HashMap.c
+:successes:
+- :test: test_hashMapAdd_given_empty_hash_table_add_value_3
+  :line: 14
+  :message: ''
+:failures: []
+:ignores: []
+:counts:
+  :total: 1
+  :passed: 1
+  :failed: 0
+  :ignored: 0
+:stdout: []
