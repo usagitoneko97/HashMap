@@ -16,5 +16,7 @@ struct HashTable{
 
 void hashMapInit(HashTable *table, int size);
 void _hashMapAdd(HashTable *table, void *data, int index);
+void hashMapAddInteger(HashTable *table, int data, int size);
+uint32_t hashUsingModulus(int data, int size);
 
 #endif // _HASHMAP_H

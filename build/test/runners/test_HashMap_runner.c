@@ -30,7 +30,10 @@ char* GlobalOrderError;
 /*=======External Functions This Runner Calls=====*/
 extern void setUp(void);
 extern void tearDown(void);
-extern void test_hashMapAdd_given_empty_hash_table_add_value_3(void);
+extern void test_hashMapAdd_given_empty_hash_table_add_value_3_in_index_5(void);
+extern void test_hashMapAddInteger_add_15_expect_hashValue_15(void);
+extern void test_hashMapAddInteger_add_32_expect_hashValue_2(void);
+extern void test_hashMapAddInteger_add_15_given_collision_expect_15_addedTo_linkedlist_chain(void);
 
 
 /*=======Test Reset Option=====*/
@@ -46,7 +49,10 @@ void resetTest(void)
 int main(void)
 {
   UnityBegin("test_HashMap.c");
-  RUN_TEST(test_hashMapAdd_given_empty_hash_table_add_value_3, 14);
+  RUN_TEST(test_hashMapAdd_given_empty_hash_table_add_value_3_in_index_5, 16);
+  RUN_TEST(test_hashMapAddInteger_add_15_expect_hashValue_15, 28);
+  RUN_TEST(test_hashMapAddInteger_add_32_expect_hashValue_2, 37);
+  RUN_TEST(test_hashMapAddInteger_add_15_given_collision_expect_15_addedTo_linkedlist_chain, 48);
 
   return (UnityEnd());
 }

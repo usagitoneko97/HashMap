@@ -17,14 +17,15 @@ void _hashMapAdd(HashTable *table, void *data, int index){
     ListAddLinkedList(table->list[index], &newItem);
 }
 
-// uint32_t hashUsingModulus(int data, int size){
-//     return 
-// }
+uint32_t hashUsingModulus(int data, int size){
+    return data % size;
+}
 
-void hashMapAddInteger(HashTable *table, int data){
+void hashMapAddInteger(HashTable *table, int data, int size){
     //compute hash value
-    // uint32_t hashValue = hashUsingModulus(data);
-    // _hashMapAdd(table, (void*)&data, hashValue);
+    uint32_t hashValue = hashUsingModulus(data, size * SIZE_FACTOR);
+    printf("hash value = %d", hashValue);
+    _hashMapAdd(table, (void*)&data, hashValue);
     //_hashmapAdd(...)
 }
 

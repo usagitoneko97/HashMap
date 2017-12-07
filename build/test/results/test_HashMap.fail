@@ -1,0 +1,28 @@
+---
+:source:
+  :path: test
+  :file: test_HashMap.c
+:successes:
+- :test: test_hashMapAdd_given_empty_hash_table_add_value_3_in_index_5
+  :line: 16
+  :message: ''
+- :test: test_hashMapAddInteger_add_15_expect_hashValue_15
+  :line: 28
+  :message: ''
+- :test: test_hashMapAddInteger_add_32_expect_hashValue_2
+  :line: 37
+  :message: ''
+:failures:
+- :test: test_hashMapAddInteger_add_15_given_collision_expect_15_addedTo_linkedlist_chain
+  :line: 56
+  :message: Expected 23 Was 15
+:ignores: []
+:counts:
+  :total: 4
+  :passed: 3
+  :failed: 1
+  :ignored: 0
+:stdout:
+- hash value = 15
+- hash value = 2
+- hash value = 15
