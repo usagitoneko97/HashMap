@@ -4,10 +4,11 @@
 #include "HashMap.h"
 
 
-void hashMapInit(HashTable *table, int size){
+void hashMapInit(HashTable *table, int size, int sizeFactor){
 
-    table->list = (LinkedList*)calloc(size * SIZE_FACTOR, sizeof(LinkedList));
+    table->list = (LinkedList *)calloc(size * sizeFactor, sizeof(LinkedList));
     table->size = size;
+    table->sizeFactor = sizeFactor;
 }
 
 void _hashMapAdd(HashTable *table, void *data, int index){
@@ -23,9 +24,9 @@ uint32_t hashUsingModulus(int data, int size){
     return data % size;
 }
 
-void hashMapAddInteger(HashTable *table, Data *data, int size){
+void hashMapAddInteger(HashTable *table, Data *data){
     //compute hash value
-    uint32_t hashValue = hashUsingModulus(data->key, size * SIZE_FACTOR);
+    uint32_t hashValue = hashUsingModulus(data->key, table->size * table->sizeFactor);
     printf("hash value = %d", hashValue);
     _hashMapAdd(table, (void*)data, hashValue);
     //_hashmapAdd(...)

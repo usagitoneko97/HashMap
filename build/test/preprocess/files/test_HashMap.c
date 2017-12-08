@@ -32,7 +32,7 @@ void test_hashMapAdd_given_empty_hash_table_add_key_5_value_5_in_index_5(void)
 
     int dataInt = 5;
 
-    hashMapInit(&table, 10);
+    hashMapInit(&table, 10, 3);
 
     Data *data = dataCreate(5, (void *)&dataInt);
 
@@ -60,13 +60,13 @@ void test_hashMapAddInteger_add_key15_value_int_15_expect_hashValue_15(void){
 
     HashTable table;
 
-    hashMapInit(&table, 10);
+    hashMapInit(&table, 10, 3);
 
     int dataInt = 15;
 
     Data *data = dataCreate(15, (void *)&dataInt);
 
-    hashMapAddInteger(&table, (void*)data, 10);
+    hashMapAddInteger(&table, (void*)data);
 
     if ((((table.list)) != 
 
@@ -88,13 +88,13 @@ void test_hashMapAddInteger_add_key32_value_int_20_expect_hashValue_2(void){
 
     HashTable table;
 
-    hashMapInit(&table, 10);
+    hashMapInit(&table, 10, 3);
 
     int dataInt = 20;
 
     Data *data = dataCreate(32, (void *)&dataInt);
 
-    hashMapAddInteger(&table, (void*)data, 10);
+    hashMapAddInteger(&table, (void*)data);
 
 
 
@@ -114,7 +114,7 @@ void test_hashMapAddInteger_add_15_given_collision_expect_15_addedTo_linkedlist_
 
     HashTable table;
 
-    hashMapInit(&table, 10);
+    hashMapInit(&table, 10, 3);
 
 
 
@@ -155,5 +155,13 @@ void test_hashMapAddInteger_add_15_given_collision_expect_15_addedTo_linkedlist_
    ((void *)0)
 
    ), (UNITY_UINT)(64), UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void xtest_hashValue_exceed_total_bucket_size_expect_throw_exception(void){
+
+
 
 }

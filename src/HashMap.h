@@ -4,7 +4,6 @@
 #include "linkedlist.h"
 #include "Compare.h"
 #include "Data.h"
-#define SIZE_FACTOR  3
 typedef struct HashTable HashTable;
 
 struct HashTable{
@@ -15,9 +14,9 @@ struct HashTable{
 
 
 
-void hashMapInit(HashTable *table, int size);
+void hashMapInit(HashTable *table, int size, int sizeFactor);
 void _hashMapAdd(HashTable *table, void *data, int index);
-void hashMapAddInteger(HashTable *table, Data *data, int size);
+void hashMapAddInteger(HashTable *table, Data *data);
 uint32_t hashUsingModulus(int data, int size);
 
 void *_hashMapSearch(HashTable *table, uint32_t key, int index, Compare compareFunc);
