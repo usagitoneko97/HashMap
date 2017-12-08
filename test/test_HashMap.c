@@ -121,3 +121,35 @@ void test_addHashTable_given_add_2_duplicate_key_expect_hashTable_update_value_t
     TEST_ASSERT_EQUAL_STRING("Spangle call illi line", (char *)(((Data *)(table.list[15].head->next->data))->value));
     // TEST_ASSERT_EQUAL(15, *(int *)(((Data *)(table.list[15].tail->data))->value));
 }
+
+/**
+ * 
+ *    bucket
+ *    \0\ 
+ *    \1\                             search key3     return value23
+ *    \2\                               ----->
+ *    \3\ --- key3  ----  key12   
+ *    \4\      \            \
+ *           value23        value34
+ */
+void test_hashTableGet_given_key3_value_int23_key2_value_int34(void){
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    int dataInt23 = 23;
+    Data *data23 = dataCreate(3, (void *)&dataInt23);
+
+    int dataInt34 = 34;
+    Data *data34 = dataCreate(12, (void *)&dataInt34);
+
+    Try{
+        _hashMapAddInt(&table, (void *)data23, 15);
+        _hashMapAddInt(&table, (void *)data34, 15);
+
+        void *dataReturn = hashMapSearchKeyInt(&table, 3);
+        TEST_ASSERT_NOT_NULL(dataReturn);
+        TEST_ASSERT_EQUAL(23, *(int*)((Data*)(dataReturn))->value);
+    }Catch(ex){
+        dumpException(ex);
+    }
+}

@@ -45,16 +45,16 @@ void hashMapAdd(HashTable *table, Data *data){
 
 void *_hashMapSearch(HashTable *table, uint32_t key, int index, Compare compareFunc)
 {
+    return NULL;
 }
 
 void _hashMapRemove(HashTable *table, void *data, int index, Compare compareFunc){
     //free memory
 }
 
-void hashMapSearch(HashTable *table, int data){
-    //compute hash value
-
-    // _hashMapSearch(table, data, hashValue, integerCompare);
+void *hashMapSearch(HashTable *table, uint32_t key, Compare compareFunc){
+    uint32_t hashValue = hashUsingModulus(key, table->size * table->sizeFactor);
+    return _hashMapSearch(table, key, hashValue, compareFunc);
 }
 
 void listAddUniqueKey(LinkedList *list, Item *data, uint32_t key, Compare compareFunc)
