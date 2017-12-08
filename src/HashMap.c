@@ -23,16 +23,16 @@ uint32_t hashUsingModulus(int data, int size){
     return data % size;
 }
 
-void hashMapAddInteger(HashTable *table, int data, int size){
+void hashMapAddInteger(HashTable *table, Data *data, int size){
     //compute hash value
-    uint32_t hashValue = hashUsingModulus(data, size * SIZE_FACTOR);
+    uint32_t hashValue = hashUsingModulus(data->key, size * SIZE_FACTOR);
     printf("hash value = %d", hashValue);
-    _hashMapAdd(table, (void*)&data, hashValue);
+    _hashMapAdd(table, (void*)data, hashValue);
     //_hashmapAdd(...)
 }
 
-void _hashMapSearch(HashTable *table, void *data, int index, Compare compareFunc){
-
+void *_hashMapSearch(HashTable *table, uint32_t key, int index, Compare compareFunc)
+{
 }
 
 void _hashMapRemove(HashTable *table, void *data, int index, Compare compareFunc){

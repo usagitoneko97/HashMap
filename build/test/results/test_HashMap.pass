@@ -3,17 +3,17 @@
   :path: test
   :file: test_HashMap.c
 :successes:
-- :test: test_hashMapAdd_given_empty_hash_table_add_value_3_in_index_5
-  :line: 16
+- :test: test_hashMapAdd_given_empty_hash_table_add_key_5_value_5_in_index_5
+  :line: 17
   :message: ''
-- :test: test_hashMapAddInteger_add_15_expect_hashValue_15
-  :line: 27
+- :test: test_hashMapAddInteger_add_key15_value_int_15_expect_hashValue_15
+  :line: 29
   :message: ''
-- :test: test_hashMapAddInteger_add_32_expect_hashValue_2
-  :line: 35
+- :test: test_hashMapAddInteger_add_key32_value_int_20_expect_hashValue_2
+  :line: 39
   :message: ''
 - :test: test_hashMapAddInteger_add_15_given_collision_expect_15_addedTo_linkedlist_chain
-  :line: 44
+  :line: 50
   :message: ''
 :failures: []
 :ignores: []

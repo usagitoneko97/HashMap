@@ -3,4 +3,5 @@
 - HashMap.h
 - Compare.h
 - linkedlist.h
+- Data.h
 - build/temp/_test_HashMap.c
