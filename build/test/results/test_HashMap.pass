@@ -3,25 +3,33 @@
   :path: test
   :file: test_HashMap.c
 :successes:
-- :test: test_hashMapAdd_given_empty_hash_table_add_key_5_value_5_in_index_5
-  :line: 17
+- :test: test_hashMapAddInt_given_empty_hash_table_add_key_5_value_5_in_index_5
+  :line: 21
   :message: ''
-- :test: test_hashMapAddInteger_add_key15_value_int_15_expect_hashValue_15
-  :line: 29
+- :test: test_hashMapAddIntInteger_add_key15_value_int_15_expect_hashValue_15
+  :line: 37
   :message: ''
-- :test: test_hashMapAddInteger_add_key32_value_int_20_expect_hashValue_2
-  :line: 39
+- :test: test_hashMapAddIntInteger_add_key32_value_int_20_expect_hashValue_2
+  :line: 47
   :message: ''
-- :test: test_hashMapAddInteger_add_15_given_collision_expect_15_addedTo_linkedlist_chain
-  :line: 50
+- :test: test_hashMapAddIntInteger_add_15_given_collision_expect_15_addedTo_linkedlist_chain
+  :line: 58
+  :message: ''
+- :test: test_hashValue_exceed_total_bucket_size_expect_throw_exception
+  :line: 79
+  :message: ''
+- :test: test_addHashTable_given_add_2_duplicate_key_expect_hashTable_update_value_to_the_newest_key_entry
+  :line: 93
   :message: ''
 :failures: []
 :ignores: []
 :counts:
-  :total: 4
-  :passed: 4
+  :total: 6
+  :passed: 6
   :failed: 0
   :ignored: 0
 :stdout:
 - hash value = 15
 - hash value = 2
+- hash index out of bound(err=1)
+- hash value = 15hash value = 15string 1 = Spangle call illi line

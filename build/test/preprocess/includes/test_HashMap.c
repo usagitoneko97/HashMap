@@ -4,4 +4,6 @@
 - Compare.h
 - linkedlist.h
 - Data.h
+- Exception.h
+- CException.h
 - build/temp/_test_HashMap.c

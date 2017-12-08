@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "linkedlist.h"
+#include <stdint.h>
 
 void ListInit(LinkedList *list){
   list->head = NULL;
@@ -72,3 +73,4 @@ void createItem(Item *item, void *data, Item *next){
   item->data = data;
   item->next = next;
 }
+
