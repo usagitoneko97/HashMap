@@ -69,10 +69,10 @@
   :testfail: ".fail"
   :dependencies: ".d"
 :unity:
-  :vendor_path: C:/Users/User_Lenovo/Documents/C_project/DataAlgorithm/HashMap/vendor/ceedling/vendor
+  :vendor_path: C:/Students/usagitoneko/dataAlgorithm/HashMap/vendor/ceedling/vendor
   :defines: []
 :cmock:
-  :vendor_path: C:/Users/User_Lenovo/Documents/C_project/DataAlgorithm/HashMap/vendor/ceedling/vendor
+  :vendor_path: C:/Students/usagitoneko/dataAlgorithm/HashMap/vendor/ceedling/vendor
   :defines: []
   :includes: []
   :mock_prefix: mock_
@@ -91,7 +91,7 @@
   :verbosity: 3
   :unity_helper: false
 :cexception:
-  :vendor_path: C:/Users/User_Lenovo/Documents/C_project/DataAlgorithm/HashMap/vendor/ceedling/vendor
+  :vendor_path: C:/Students/usagitoneko/dataAlgorithm/HashMap/vendor/ceedling/vendor
   :defines: []
 :test_runner:
   :includes: []

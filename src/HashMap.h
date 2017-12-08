@@ -8,8 +8,9 @@
 typedef struct HashTable HashTable;
 
 struct HashTable{
-    LinkedList **list;
+    LinkedList *list;
     int size;
+    int sizeFactor;
 };
 
 

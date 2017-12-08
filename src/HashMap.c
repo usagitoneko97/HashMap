@@ -6,15 +6,17 @@
 
 void hashMapInit(HashTable *table, int size){
 
-    table->list = (LinkedList**)calloc(size * SIZE_FACTOR, sizeof(LinkedList **));
+    table->list = (LinkedList*)calloc(size * SIZE_FACTOR, sizeof(LinkedList));
     table->size = size;
 }
 
 void _hashMapAdd(HashTable *table, void *data, int index){
-    table->list[index] = (LinkedList*)malloc(1);
-    ListInit(table->list[index]);
-    Item newItem = createItem(data, NULL);
-    ListAddLinkedList(table->list[index], &newItem);
+    if(table->list[index].head == NULL){
+        ListInit(&(table->list[index]));
+    }
+	Item *newItem = (Item*)malloc(sizeof(Item));
+    createItem(newItem, data, NULL);
+    ListAddLinkedList(&(table->list[index]), newItem);
 }
 
 uint32_t hashUsingModulus(int data, int size){

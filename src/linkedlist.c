@@ -68,9 +68,7 @@ Item* ListRemoveLinkedListByName(char* name, LinkedList *list){
   }
 }
 
-Item createItem(void *data, Item *next){
-  Item item;
-  item.data = data;
-  item.next = next;
-  return item;
+void createItem(Item *item, void *data, Item *next){
+  item->data = data;
+  item->next = next;
 }

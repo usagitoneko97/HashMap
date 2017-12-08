@@ -43,17 +43,11 @@ void test_hashMapAdd_given_empty_hash_table_add_value_3_in_index_5(void)
 
    )) {} else {UnityFail( (((" Expected Non-NULL"))), (UNITY_UINT)((UNITY_UINT)((UNITY_UINT)(23))));};
 
-    if ((((table.list[5])) != 
+    UnityAssertEqualNumber((UNITY_INT)((5)), (UNITY_INT)((*(int *)table.list[5].head->data)), (
 
    ((void *)0)
 
-   )) {} else {UnityFail( (((" Expected Non-NULL"))), (UNITY_UINT)((UNITY_UINT)((UNITY_UINT)(24))));};
-
-    UnityAssertEqualNumber((UNITY_INT)((5)), (UNITY_INT)((*(int *)table.list[5]->head->data)), (
-
-   ((void *)0)
-
-   ), (UNITY_UINT)(25), UNITY_DISPLAY_STYLE_INT);
+   ), (UNITY_UINT)(24), UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -71,19 +65,13 @@ void test_hashMapAddInteger_add_15_expect_hashValue_15(void){
 
    ((void *)0)
 
-   )) {} else {UnityFail( (((" Expected Non-NULL"))), (UNITY_UINT)((UNITY_UINT)((UNITY_UINT)(32))));};
+   )) {} else {UnityFail( (((" Expected Non-NULL"))), (UNITY_UINT)((UNITY_UINT)((UNITY_UINT)(31))));};
 
-    if ((((table.list[15])) != 
-
-   ((void *)0)
-
-   )) {} else {UnityFail( (((" Expected Non-NULL"))), (UNITY_UINT)((UNITY_UINT)((UNITY_UINT)(33))));};
-
-    UnityAssertEqualNumber((UNITY_INT)((15)), (UNITY_INT)((*(int *)table.list[15]->head->data)), (
+    UnityAssertEqualNumber((UNITY_INT)((15)), (UNITY_INT)((*(int *)table.list[15].head->data)), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(34), UNITY_DISPLAY_STYLE_INT);
+   ), (UNITY_UINT)(32), UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -99,23 +87,11 @@ void test_hashMapAddInteger_add_32_expect_hashValue_2(void){
 
 
 
-    if ((((table.list)) != 
+    UnityAssertEqualNumber((UNITY_INT)((32)), (UNITY_INT)((*(int *)table.list[2].head->data)), (
 
    ((void *)0)
 
-   )) {} else {UnityFail( (((" Expected Non-NULL"))), (UNITY_UINT)((UNITY_UINT)((UNITY_UINT)(42))));};
-
-    if ((((table.list[2])) != 
-
-   ((void *)0)
-
-   )) {} else {UnityFail( (((" Expected Non-NULL"))), (UNITY_UINT)((UNITY_UINT)((UNITY_UINT)(43))));};
-
-    UnityAssertEqualNumber((UNITY_INT)((32)), (UNITY_INT)((*(int *)table.list[2]->head->data)), (
-
-   ((void *)0)
-
-   ), (UNITY_UINT)(44), UNITY_DISPLAY_STYLE_INT);
+   ), (UNITY_UINT)(40), UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -135,26 +111,34 @@ void test_hashMapAddInteger_add_15_given_collision_expect_15_addedTo_linkedlist_
 
     _hashMapAdd(&table, (void*)&data, 15);
 
+    UnityAssertEqualNumber((UNITY_INT)((23)), (UNITY_INT)((*(int *)table.list[15].head->data)), (
+
+   ((void *)0)
+
+   ), (UNITY_UINT)(50), UNITY_DISPLAY_STYLE_INT);
+
+ int data2 = 15;
+
+    _hashMapAdd(&table, (void*)&data2, 15);
+
+    UnityAssertEqualNumber((UNITY_INT)((23)), (UNITY_INT)((*(int *)table.list[15].head->data)), (
+
+   ((void *)0)
+
+   ), (UNITY_UINT)(53), UNITY_DISPLAY_STYLE_INT);
+
+    if ((((table.list[15].head->next->data)) != 
+
+   ((void *)0)
+
+   )) {} else {UnityFail( (((" Expected Non-NULL"))), (UNITY_UINT)((UNITY_UINT)((UNITY_UINT)(54))));};
 
 
-    hashMapAddInteger(&table, 15, 10);
 
-    UnityAssertEqualNumber((UNITY_INT)((23)), (UNITY_INT)((*(int *)table.list[15]->head->data)), (
+    UnityAssertEqualNumber((UNITY_INT)((15)), (UNITY_INT)((*(int *)table.list[15].tail->data)), (
 
    ((void *)0)
 
    ), (UNITY_UINT)(56), UNITY_DISPLAY_STYLE_INT);
-
-    if ((((table.list[15]->head->next->data)) != 
-
-   ((void *)0)
-
-   )) {} else {UnityFail( (((" Expected Non-NULL"))), (UNITY_UINT)((UNITY_UINT)((UNITY_UINT)(57))));};
-
-    UnityAssertEqualNumber((UNITY_INT)((15)), (UNITY_INT)((*(int *)table.list[15]->head->next->data)), (
-
-   ((void *)0)
-
-   ), (UNITY_UINT)(58), UNITY_DISPLAY_STYLE_INT);
 
 }
