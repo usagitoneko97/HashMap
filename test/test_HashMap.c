@@ -125,14 +125,14 @@ void test_addHashTable_given_add_2_duplicate_key_expect_hashTable_update_value_t
 /**
  * 
  *    bucket
- *    \0\ 
- *    \1\                             search key3     return value23
- *    \2\                               ----->
- *    \3\ --- key3  ----  key12   
- *    \4\      \            \
+ *    |0| 
+ *    |1|                             search key3     return value23
+ *    |2|                               ----->
+ *    |3| --- key3  ----  key12   
+ *    |4|      \            \
  *           value23        value34
  */
-void test_hashTableGet_given_key3_value_int23_key2_value_int34(void){
+void test_hashTableGet_given_key3_value_int23_key12_value_int34(void){
     HashTable table;
     hashMapInit(&table, 10, 3);
 
@@ -152,6 +152,45 @@ void test_hashTableGet_given_key3_value_int23_key2_value_int34(void){
         TEST_ASSERT_EQUAL(23, *(int*)((Data*)(((Item*)(dataReturn))->data))->value);
         
     }Catch(ex){
+        dumpException(ex);
+    }
+}
+
+/**
+ * 
+ *    bucket
+ *    |0| 
+ *    |1|                                      search key3     return "Jang"
+ *    |2|                                        ----->
+ *    |3| --- key12  ----  key3  ----  key8            
+ *    |4|      \            \            \
+ *           "stella"       "Jang"     "carol's"
+ */
+void test_hashTableGet_given_key3_value_String1_key12_value_string2(void)
+{
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    Try
+    {
+        char *string1 = "stella";
+        Data *data1 = dataCreate(12, (void *)string1);
+        _hashMapAddInt(&table, (void *)data1, 3);
+
+        char *string2 = "Jang";
+        Data *data2 = dataCreate(3, (void *)string2);
+        _hashMapAddInt(&table, (void *)data2, 3);
+
+        char *string3 = "carol's";
+        Data *data3 = dataCreate(8, (void *)string3);
+        _hashMapAddInt(&table, (void *)data3, 3);
+
+        void *dataReturn = hashMapSearchKeyInt(&table, 3);
+        TEST_ASSERT_NOT_NULL(dataReturn);
+        TEST_ASSERT_EQUAL_STRING("Jang", (char *)((Data *)(((Item *)(dataReturn))->data))->value);
+    }
+    Catch(ex)
+    {
         dumpException(ex);
     }
 }
