@@ -65,8 +65,18 @@ Item* ListRemoveLinkedListByName(char* name, LinkedList *list){
       list->head->next = deleteHead->next;  //deleting the data
       list->head = tempHead;//restore the head
       list->len--;
-
   }
+}
+
+Item *listSearch(LinkedList list, uint32_t key, Compare compareFunc){
+  while(list.head != NULL){
+    if (compareFunc((void*)&(((Data *)(list.head->data))->key), (void*)&key) == 1){
+      printf("im here");
+      return list.head;
+    }
+    list.head = list.head->next;
+  }
+  return NULL;
 }
 
 void createItem(Item *item, void *data, Item *next){

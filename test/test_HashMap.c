@@ -67,11 +67,11 @@ void test_hashMapAddIntInteger_add_15_given_collision_expect_15_addedTo_linkedli
     Data *data15 = dataCreate(15, (void *)&dataInt15);
 
     Try{
-    _hashMapAddInt(&table, (void*)data15, 15);
+        _hashMapAddInt(&table, (void*)data15, 15);
     }Catch(ex){
         dumpException(ex);
     }
-    TEST_ASSERT_EQUAL(23, *(int *)(((Data *)(table.list[15].head->data))->value));
+    TEST_ASSERT_EQUAL(23, *(int *)(((Data *)(table.list[15].head->data))->value)    );
     TEST_ASSERT_EQUAL(15, *(int *)(((Data *)(table.list[15].head->next->data))->value));
     TEST_ASSERT_EQUAL(15, *(int *)(((Data *)(table.list[15].tail->data))->value));
 }
@@ -136,19 +136,21 @@ void test_hashTableGet_given_key3_value_int23_key2_value_int34(void){
     HashTable table;
     hashMapInit(&table, 10, 3);
 
-    int dataInt23 = 23;
-    Data *data23 = dataCreate(3, (void *)&dataInt23);
-
-    int dataInt34 = 34;
-    Data *data34 = dataCreate(12, (void *)&dataInt34);
-
     Try{
-        _hashMapAddInt(&table, (void *)data23, 15);
-        _hashMapAddInt(&table, (void *)data34, 15);
+        int dataInt23 = 23;
+        Data *data23 = dataCreate(3, (void *)&dataInt23);
+        _hashMapAddInt(&table, (void *)data23, 3);
+        int dataInt34 = 34;
+        Data *data34 = dataCreate(12, (void *)&dataInt34);
+        _hashMapAddInt(&table, (void *)data34, 3);
+
+        TEST_ASSERT_EQUAL(23, *(int *)(((Data *)(table.list[3].head->data))->value));
+        TEST_ASSERT_EQUAL(34, *(int *)(((Data *)(table.list[3].head->next->data))->value));
 
         void *dataReturn = hashMapSearchKeyInt(&table, 3);
         TEST_ASSERT_NOT_NULL(dataReturn);
-        TEST_ASSERT_EQUAL(23, *(int*)((Data*)(dataReturn))->value);
+        TEST_ASSERT_EQUAL(23, *(int*)((Data*)(((Item*)(dataReturn))->data))->value);
+        
     }Catch(ex){
         dumpException(ex);
     }

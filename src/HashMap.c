@@ -43,25 +43,25 @@ void hashMapAdd(HashTable *table, Data *data){
     //_hashmapAdd(...)
 }
 
-void *_hashMapSearch(HashTable *table, uint32_t key, int index, Compare compareFunc)
+Item *_hashMapSearch(HashTable *table, uint32_t key, int index, Compare compareFunc)
 {
-    return NULL;
+    return listSearch((table->list[index]), key, compareFunc);
 }
 
 void _hashMapRemove(HashTable *table, void *data, int index, Compare compareFunc){
     //free memory
 }
 
-void *hashMapSearch(HashTable *table, uint32_t key, Compare compareFunc){
+Item *hashMapSearch(HashTable *table, uint32_t key, Compare compareFunc){
     uint32_t hashValue = hashUsingModulus(key, table->size * table->sizeFactor);
     return _hashMapSearch(table, key, hashValue, compareFunc);
 }
 
 void listAddUniqueKey(LinkedList *list, Item *data, uint32_t key, Compare compareFunc)
-{   
+{
     LinkedList listTemp = *list;
     while(listTemp.head != NULL){
-        if(compareFunc((void*)&(((Data *)(listTemp.head->data))->key), (void*)&key) == 1)
+        if(compareFunc((void*)&(((Data *)(listTemp.head->data))->key), (void*)&(((Data*)(data->data))->key)) == 1)
         {
             //replacing data
             ((Data *)(listTemp.head->data))->value = ((Data*)(data->data))->value;
