@@ -32,6 +32,7 @@ void ListAddEmptyLinkedList (LinkedList *list, Item *item);
 void ListAddLinkedList(LinkedList *list, Item *item);
 Item* ListRemoveFirst(LinkedList *list);
 Item* ListRemoveLinkedListByName(char* name, LinkedList *list);
+void listRemoveByKey(LinkedList *list, uint32_t key, Compare compareFunc);
 void createItem(Item *item, void *data, Item *next);
 Item *listSearch(LinkedList list, uint32_t key, Compare compareFunc);
 #endif // _LINKEDLIST_H
