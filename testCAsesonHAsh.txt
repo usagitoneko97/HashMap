@@ -1,0 +1,217 @@
+
+
+
+
+
+/**
+ * 
+ *    bucket
+ *    |0| 
+ *    |1|                             search key3     return value23
+ *    |2|                               ----->
+ *    |3| --- key3  ----  key12   
+ *    |4|      \            \
+ *           value23        value34
+ */
+void test_hashTableGet_given_key3_value_int23_key12_value_int34(void){
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    Try{
+        int dataInt23 = 23;
+        Data *data23 = dataCreate(3, (void *)&dataInt23);
+        _hashMapAddInt(&table, (void *)data23, 3);
+        int dataInt34 = 34;
+        Data *data34 = dataCreate(12, (void *)&dataInt34);
+        _hashMapAddInt(&table, (void *)data34, 3);
+
+        TEST_ASSERT_EQUAL(23, *(int *)(((Data *)(table.list[3].head->data))->value));
+        TEST_ASSERT_EQUAL(34, *(int *)(((Data *)(table.list[3].head->next->data))->value));
+
+        void *dataReturn = hashMapSearchKeyInt(&table, 3);
+        TEST_ASSERT_NOT_NULL(dataReturn);
+        TEST_ASSERT_EQUAL(23, *(int*)((Data*)(((Item*)(dataReturn))->data))->value);
+        
+    }Catch(ex){
+        dumpException(ex);
+    }
+}
+
+/**
+ * 
+ *    bucket
+ *    |0| 
+ *    |1|                                      search key3     return "Jang"
+ *    |2|                                        ----->
+ *    |3| --- key12  ----  key5  ----  key8            
+ *    |4|      \            \            \
+ *           "stella"       "Jang"     "carol's"
+ */
+void test_hashTableSearch_given_key12_key5_key8_search_key3_expect_NO_CHANGED_KEY_NA_exception_thrown(void)
+{
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    Try
+    {
+        char *string1 = "stella";
+        Data *data1 = dataCreate(12, (void *)string1);
+        _hashMapAddInt(&table, (void *)data1, 3);
+
+        char *string2 = "Jang";
+        Data *data2 = dataCreate(5, (void *)string2);
+        _hashMapAddInt(&table, (void *)data2, 3);
+
+        char *string3 = "carol's";
+        Data *data3 = dataCreate(8, (void *)string3);
+        _hashMapAddInt(&table, (void *)data3, 3);
+
+        void *dataReturn = hashMapSearchKeyInt(&table, 3);
+        TEST_FAIL_MESSAGE("expect key not available exception to be thrown!");
+    }
+    Catch(ex)
+    {
+        dumpException(ex);
+    }
+}
+
+/**
+ * 
+ *    bucket
+ *    |0| 
+ *    |1|                                      search key3     return "Jang"
+ *    |2|                                        ----->
+ *    |3| --- key12  ----  key3  ----  key8            
+ *    |4|      \            \            \
+ *           "stella"       "Jang"     "carol's"
+ */
+void test_hashTableGet_given_key3_value_String1_key12_value_string2(void)
+{
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    Try
+    {
+        char *string1 = "stella";
+        Data *data1 = dataCreate(12, (void *)string1);
+        _hashMapAddInt(&table, (void *)data1, 3);
+
+        char *string2 = "Jang";
+        Data *data2 = dataCreate(3, (void *)string2);
+        _hashMapAddInt(&table, (void *)data2, 3);
+
+        char *string3 = "carol's";
+        Data *data3 = dataCreate(8, (void *)string3);
+        _hashMapAddInt(&table, (void *)data3, 3);
+
+        void *dataReturn = hashMapSearchKeyInt(&table, 3);
+        TEST_ASSERT_NOT_NULL(dataReturn);
+        TEST_ASSERT_EQUAL_STRING("Jang", (char *)((Data *)(((Item *)(dataReturn))->data))->value);
+    }
+    Catch(ex)
+    {
+        dumpException(ex);
+    }
+}
+
+/**
+ * 
+ *    bucket
+ *    |0| 
+ *    |1|                                      search key3     return "Jang"
+ *    |2|                                        ----->
+ *    |3| --- key12  ----  key5  ----  key8            
+ *    |4|      \            \            \
+ *           "stella"       "Jang"     "carol's"
+ */
+void test_hashTableRemove_given_key12_key5_key8_remove_key3_expect_NO_CHANGED_KEY_NA_exception_thrown(void){
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    Try
+    {
+        char *string1 = "stella";
+        Data *data1 = dataCreate(12, (void *)string1);
+        _hashMapAddInt(&table, (void *)data1, 3);
+
+        char *string2 = "Jang";
+        Data *data2 = dataCreate(5, (void *)string2);
+        _hashMapAddInt(&table, (void *)data2, 3);
+
+        char *string3 = "carol's";
+        Data *data3 = dataCreate(8, (void *)string3);
+        _hashMapAddInt(&table, (void *)data3, 3);
+
+        hashMapRemoveKeyInt(&table, 3);
+        TEST_FAIL_MESSAGE("expect key not available exception to be thrown!");
+        
+    }
+    Catch(ex)
+    {
+        TEST_ASSERT_EQUAL_STRING("stella", (char *)(((Data *)(table.list[3].head->data))->value));
+        TEST_ASSERT_EQUAL_STRING("Jang", (char *)(((Data *)(table.list[3].head->next->data))->value));
+        TEST_ASSERT_EQUAL_STRING("carol's", (char *)(((Data *)(table.list[3].head->next->next->data))->value));
+        dumpException(ex);
+    }
+}
+
+/**
+ * 
+ *    bucket
+ *    |0|                                                                                                     
+ *    |1|                                                                              
+ *    |2|                                                                                        
+ *    |3| --- key12  ----  key3  ----  key8                                                                  
+ *    |4|      \            \            \                                                            
+ *           "stella"       "Jang"     "carol's"   
+ *           
+ *    -----
+ *        |        
+ *    remove key3
+ * 
+ *    |0|                                       
+ *    |1|                                       
+ *    |2|                                       
+ *    |3| --- key12  ----    key8     
+ *    |4|      \               \      
+ *          "stella"         "carol's"                                       
+ */
+void test_hashTableRemove_given_key12_key3_key8_on_bucket_3_remove_key3(void){
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    Try
+    {
+        char *string1 = "stella";
+        Data *data1 = dataCreate(12, (void *)string1);
+        _hashMapAddInt(&table, (void *)data1, 3);
+
+        char *string2 = "Jang";
+        Data *data2 = dataCreate(3, (void *)string2);
+        _hashMapAddInt(&table, (void *)data2, 3);
+
+        char *string3 = "carol's";
+        Data *data3 = dataCreate(8, (void *)string3);
+        _hashMapAddInt(&table, (void *)data3, 3);
+
+        hashMapRemoveKeyInt(&table, 3);
+
+        TEST_ASSERT_EQUAL_STRING("stella", (char *)(((Data *)(table.list[3].head->data))->value));
+        TEST_ASSERT_EQUAL_STRING("carol's", (char *)(((Data *)(table.list[3].head->next->data))->value));
+    }
+    Catch(ex)
+    {
+        dumpException(ex);
+    }
+}
+
+void test_hashTableAdd_given_key_string_stella_data_int_5(void){
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    Try{
+
+    }Catch(ex){
+        dumpException(ex);
+    }
+}
