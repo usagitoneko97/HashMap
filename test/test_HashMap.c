@@ -37,6 +37,7 @@ void tearDown(void)
  *                    
  * 
  */
+/*
 void test_addHashTable_given_empty_table_add_null_data_expect_NULL_DATA_Exception_to_be_thrown(void){
     HashTable table;
     int dataInt = 5;
@@ -52,7 +53,7 @@ void test_addHashTable_given_empty_table_add_null_data_expect_NULL_DATA_Exceptio
     {
         dumpException(ex);
     }
-}
+}*/
 /**
  * 
  *    bucket
@@ -114,9 +115,8 @@ void test_hashMapAddInt_given_empty_hash_table_add_key_5_value_5_in_index_5(void
 void test_hashMapAddIntInteger_add_key15_value_int_15_expect_hashValue_15(void){
     HashTable table;
     hashMapInit(&table, 10, 3);
-    int dataInt = 15;
-    Data *data = dataCreate(15, (void *)&dataInt);    
-    hashMapAdd(&table, (void*)data);
+    //add int 15 key 15 to table
+    hashMapAddInt(&table, 15, 15);
     TEST_ASSERT_NOT_NULL(table.list);
     TEST_ASSERT_EQUAL(15, *(int *)(((Data *)(table.list[15].head->data))->value));
 }
@@ -146,9 +146,8 @@ void test_hashMapAddIntInteger_add_key15_value_int_15_expect_hashValue_15(void){
 void test_hashMapAddIntInteger_add_key32_value_int_20_expect_hashValue_2(void){
     HashTable table;
     hashMapInit(&table, 10, 3);
-    int dataInt = 20;
-    Data *data = dataCreate(32, (void *)&dataInt);
-    hashMapAdd(&table, (void*)data);
+    //add int 20 to key 32
+    hashMapAddInt(&table, 20, 32);
 
     TEST_ASSERT_EQUAL(20, *(int *)(((Data *)(table.list[2].head->data))->value));
 }
@@ -247,14 +246,10 @@ void test_addHashTable_given_add_2_duplicate_key_expect_hashTable_update_value_t
         _hashMapAddInt(&table, (void *)data15, 15);
 
         //load value int 23 to bucket 15 (key 15)
-        int valueInt = 23;
-        Data *dataInt = dataCreate(15, (void *)&valueInt);
-        hashMapAdd(&table, dataInt);
+        hashMapAddInt(&table, 23, 15);
 
         //load value string "" to also bucket 15 (key15)
-        char *valueStr = "Spangle call illi line";
-        Data *dataStr = dataCreate(15, (void *)valueStr);
-        hashMapAdd(&table, dataStr);
+        hashMapAddStr(&table, "Spangle call illi line", 15);
     }
     Catch(ex)
     {
@@ -467,4 +462,8 @@ void test_hashTableRemove_given_key12_key3_key8_on_bucket_3_remove_key3(void){
     {
         dumpException(ex);
     }
+}
+
+void test_hashTableAdd_given_key_string_stella_data_int_5(void){
+
 }

@@ -35,7 +35,8 @@ uint32_t hashUsingModulus(int data, int size){
     return data % size;
 }
 
-void hashMapAdd(HashTable *table, Data *data){
+void hashMapAdd(HashTable *table, void *value, uint32_t key, Compare compareFunc){
+    Data *data = dataCreate(key, value);
     //compute hash value
     if(data == NULL){
         Throw(createException("Data to be add should not be NULL", HASH_DATA_NULL));
@@ -43,7 +44,7 @@ void hashMapAdd(HashTable *table, Data *data){
     uint32_t hashValue = hashUsingModulus(data->key, table->size * table->sizeFactor);
     printf("hash value = %d", hashValue);
     Try{
-        _hashMapAdd(table, (void *)data, hashValue, compareKeyInt);
+        _hashMapAdd(table, (void *)data, hashValue, compareFunc);
     }Catch(ex){
         Throw(ex);
     }
@@ -91,4 +92,14 @@ void listAddUniqueKey(LinkedList *list, Item *data, uint32_t key, Compare compar
     }
     //no duplicate key,
     ListAddLinkedList(list, (Item*)data);
+}
+
+void hashMapAddStr(HashTable *table, char *strValue, uint32_t key)
+{
+    hashMapAdd(table, (void *)strValue, key, compareKeyInt);
+}
+
+void hashMapAddInt(HashTable *table, int intValue, uint32_t key)
+{
+    hashMapAdd(table, (void *)&intValue, key, compareKeyInt);
 }
