@@ -2,6 +2,9 @@
 #include <string.h>
 #include "linkedlist.h"
 #include <stdint.h>
+#include <stdlib.h>
+#include "Exception.h"
+#include "CException.h"
 
 void ListInit(LinkedList *list){
   list->head = NULL;
@@ -65,8 +68,52 @@ Item* ListRemoveLinkedListByName(char* name, LinkedList *list){
       list->head->next = deleteHead->next;  //deleting the data
       list->head = tempHead;//restore the head
       list->len--;
-
   }
+}
+
+void listRemoveByKey(LinkedList *list, uint32_t key, Compare compareFunc){
+  //preserve the head
+  Item *tempHead = list->head;
+  Item *deleteHead = NULL;
+  Item *prevL = NULL;
+  if (list->head == NULL)
+  {
+    return;
+  }
+  else
+  {
+    while (prevL != NULL)
+    {
+      if(compareFunc((void*)&(((Data *)(list->head->data))->key), (void*)&key) == 1){
+        break;
+      }
+      prevL = list->head;
+      list->head = list->head->next; //move to next item to search
+    }
+    //succesfully found the name
+    if(prevL == NULL){
+      Throw(createException("key given not available in the hash", HASH_KEY_NA));
+      return ;
+    }
+    deleteHead = list->head;
+    free(list->head);
+    list->head = prevL;
+
+    list->head->next = deleteHead->next; //deleting the data
+    list->head = tempHead;               //restore the head
+    list->len--;
+  }
+}
+
+Item *listSearch(LinkedList list, uint32_t key, Compare compareFunc){
+  while(list.head != NULL){
+    if (compareFunc((void*)&(((Data *)(list.head->data))->key), (void*)&key) == 1){
+      return list.head;
+    }
+    list.head = list.head->next;
+  }
+  Throw(createException("key given not available in the hash", HASH_KEY_NA));
+  return NULL;
 }
 
 void createItem(Item *item, void *data, Item *next){
