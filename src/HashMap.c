@@ -27,21 +27,21 @@ void _hashMapAdd(HashTable *table, void *data, int index, Compare compareFunc){
 	Item *newItem = (Item*)malloc(sizeof(Item));
     createItem(newItem, data, NULL);
 
-    listAddUniqueKey(&(table->list[index]), newItem, index, compareFunc);
+    listAddUniqueKey(&(table->list[index]), newItem, compareFunc);
     // ListAddLinkedList(&(table->list[index]), newItem);
 }
 
-uint32_t hashUsingModulus(int data, int size){
-    return data % size;
+uint32_t hashUsingModulus(const char *data, int size){
+    return *data % size;
 }
 
-void hashMapAdd(HashTable *table, void *value, uint32_t key, Compare compareFunc){
+void hashMapAdd(HashTable *table, void *value, void *key, Compare compareFunc){
     Data *data = dataCreate(key, value);
     //compute hash value
     if(data == NULL){
         Throw(createException("Data to be add should not be NULL", HASH_DATA_NULL));
     }
-    uint32_t hashValue = hashUsingModulus(data->key, table->size * table->sizeFactor);
+    uint32_t hashValue = hashUsingModulus((char *)data->key, table->size * table->sizeFactor);
     printf("hash value = %d", hashValue);
     Try{
         _hashMapAdd(table, (void *)data, hashValue, compareFunc);
@@ -51,12 +51,12 @@ void hashMapAdd(HashTable *table, void *value, uint32_t key, Compare compareFunc
     //_hashmapAdd(...)
 }
 
-Item *_hashMapSearch(HashTable *table, uint32_t key, int index, Compare compareFunc)
+/*Item *_hashMapSearch(HashTable *table, void *key, int index, Compare compareFunc)
 {
     return listSearch((table->list[index]), key, compareFunc);
 }
 
-int _hashMapRemove(HashTable *table, uint32_t key, int index, Compare compareFunc){
+int _hashMapRemove(HashTable *table, void *key, int index, Compare compareFunc){
     Try{
         listRemoveByKey(&table->list[index], key, compareFunc);
     }Catch(ex){
@@ -64,8 +64,8 @@ int _hashMapRemove(HashTable *table, uint32_t key, int index, Compare compareFun
     }
     //free memory
 }
-int hashMapRemove(HashTable *table, uint32_t key, Compare compareFunc){
-    uint32_t hashValue = hashUsingModulus(key, table->size * table->sizeFactor);
+int hashMapRemove(HashTable *table, void *key, Compare compareFunc){
+    uint32_t hashValue = hashUsingModulus((char*)key, table->size * table->sizeFactor);
     Try{
         _hashMapRemove(table, key, hashValue, compareFunc);
     }Catch(ex){
@@ -73,12 +73,12 @@ int hashMapRemove(HashTable *table, uint32_t key, Compare compareFunc){
     }
 }
 
-Item *hashMapSearch(HashTable *table, uint32_t key, Compare compareFunc){
+Item *hashMapSearch(HashTable *table, void * key, Compare compareFunc){
     uint32_t hashValue = hashUsingModulus(key, table->size * table->sizeFactor);
     return _hashMapSearch(table, key, hashValue, compareFunc);
-}
+}*/
 
-void listAddUniqueKey(LinkedList *list, Item *data, uint32_t key, Compare compareFunc)
+void listAddUniqueKey(LinkedList *list, Item *data, Compare compareFunc)
 {
     LinkedList listTemp = *list;
     while(listTemp.head != NULL){
@@ -94,12 +94,13 @@ void listAddUniqueKey(LinkedList *list, Item *data, uint32_t key, Compare compar
     ListAddLinkedList(list, (Item*)data);
 }
 
-void hashMapAddStr(HashTable *table, char *strValue, uint32_t key)
+void hashMapAddStr(HashTable *table, char *strValue, void *key)
 {
     hashMapAdd(table, (void *)strValue, key, compareKeyInt);
 }
 
-void hashMapAddInt(HashTable *table, int intValue, uint32_t key)
+void hashMapAddInt(HashTable *table, int intValue, void *key)
 {
     hashMapAdd(table, (void *)&intValue, key, compareKeyInt);
 }
+

@@ -5,10 +5,10 @@
 
 typedef struct Data Data;
 struct Data{
-    uint32_t key;
+    void *key;
     void *value;
 };
 
-Data *dataCreate(uint32_t key, void *value);
+Data *dataCreate(void *key, void *value);
 
 #endif // _DATA_H

@@ -17,21 +17,26 @@ struct HashTable{
 #define hashMapSearchKeyInt(table, key)     hashMapSearch(table, key, compareKeyInt)
 #define hashMapRemoveKeyInt(table, key)     hashMapRemove(table, key, compareKeyInt)
 
+#define hashMapPutKeyInt(table, value, key)                                      \
+            int valueVar = value; int keyVar = key;                              \
+            hashMapAdd(table, (void *)&valueVar, (void *)&keyVar, compareKeyInt)    
+#define hashMapPutKeyString(table, value, key) hashMapPut(table, (void *)value, (void *)key, compareKeyString)
 
 void hashMapInit(HashTable *table, int size, int sizeFactor);
 void _hashMapAdd(HashTable *table, void *data, int index, Compare compareFunc);
-void hashMapAdd(HashTable *table, void *value, uint32_t key, Compare compareFunc);
+void hashMapAdd(HashTable *table, void *value, void *key, Compare compareFunc);
 
+uint32_t hashUsingModulus(const char *data, int size);
 
-uint32_t hashUsingModulus(int data, int size);
+Item *_hashMapSearch(HashTable *table, void *key, int index, Compare compareFunc);
+int _hashMapRemove(HashTable *table, void *key, int index, Compare compareFunc);
+int hashMapRemove(HashTable *table, void *key, Compare compareFunc);
+void listAddUniqueKey(LinkedList *list, Item *data, Compare compareFunc);
+Item *hashMapSearch(HashTable *table, void *key, Compare compareFunc);
 
-Item *_hashMapSearch(HashTable *table, uint32_t key, int index, Compare compareFunc);
-int _hashMapRemove(HashTable *table, uint32_t key, int index, Compare compareFunc);
-int hashMapRemove(HashTable *table, uint32_t key, Compare compareFunc);
-void listAddUniqueKey(LinkedList *list, Item *data, uint32_t key, Compare compareFunc);
-Item *hashMapSearch(HashTable *table, uint32_t key, Compare compareFunc);
+void hashMapAddStr(HashTable *table, char *strValue, void *key);
+void hashMapAddInt(HashTable *table, int intValue, void *key);
 
-void hashMapAddStr(HashTable *table, char *strValue, uint32_t key);
-void hashMapAddInt(HashTable *table, int intValue, uint32_t key);
+void hashMapPut(HashTable *table, void *Value, void *key, Compare compare);
 
 #endif // _HASHMAP_H
