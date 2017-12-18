@@ -51,7 +51,7 @@ void hashMapAdd(HashTable *table, void *value, void *key, Compare compareFunc){
     //_hashmapAdd(...)
 }
 
-/*Item *_hashMapSearch(HashTable *table, void *key, int index, Compare compareFunc)
+Item *_hashMapSearch(HashTable *table, void *key, int index, Compare compareFunc)
 {
     return listSearch((table->list[index]), key, compareFunc);
 }
@@ -73,10 +73,10 @@ int hashMapRemove(HashTable *table, void *key, Compare compareFunc){
     }
 }
 
-Item *hashMapSearch(HashTable *table, void * key, Compare compareFunc){
+Item *hashMapSearch(HashTable *table, void *key, Compare compareFunc){
     uint32_t hashValue = hashUsingModulus(key, table->size * table->sizeFactor);
     return _hashMapSearch(table, key, hashValue, compareFunc);
-}*/
+}
 
 void listAddUniqueKey(LinkedList *list, Item *data, Compare compareFunc)
 {
@@ -104,3 +104,10 @@ void hashMapAddInt(HashTable *table, int intValue, void *key)
     hashMapAdd(table, (void *)&intValue, key, compareKeyInt);
 }
 
+void *hashMapSearchKeyInt(HashTable *table, int key){
+    return hashMapSearch(table, (void*)&key, compareKeyInt);
+}
+
+void hashMapRemoveKeyInt(HashTable *table, int key){
+     hashMapRemove(table, (void*)&key, compareKeyInt);
+}

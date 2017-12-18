@@ -117,7 +117,7 @@ void test_hashMapAddIntInteger_add_key15_value_int_15_expect_hashValue_15(void){
     HashTable table;
     hashMapInit(&table, 10, 3);
     //add int 15 key 15 to table
-    hashMapPutKeyInt(&table, 15, 15);
+    hashMapPutKeyIntDataInt(&table, 15, 15);
     TEST_ASSERT_NOT_NULL(table.list);
     TEST_ASSERT_EQUAL(15, *(int *)(((Data *)(table.list[15].head->data))->value));
 }
@@ -149,7 +149,7 @@ void test_hashMapAddIntInteger_add_key32_value_int_20_expect_hashValue_2(void)
     HashTable table;
     hashMapInit(&table, 10, 3);
     //add int 20 to key 32
-    hashMapPutKeyInt(&table, 20, 32);
+    hashMapPutKeyIntDataInt(&table, 20, 32);
 
     TEST_ASSERT_EQUAL(20, *(int *)(((Data *)(table.list[2].head->data))->value));
 }
@@ -197,6 +197,7 @@ void test_hashMapAddIntInteger_add_15_given_collision_expect_15_addedTo_linkedli
     }
     Catch(ex)
     {
+        TEST_FAIL_MESSAGE("Exception was thrown!");
         dumpException(ex);
     }
     TEST_ASSERT_EQUAL(23, *(int *)(((Data *)(table.list[15].head->data))->value));
@@ -219,6 +220,7 @@ void test_hashValue_exceed_total_bucket_size_expect_throw_exception(void)
     }
     Catch(ex)
     {
+        TEST_ASSERT_EQUAL(1, ex->errorCode);
         dumpException(ex);
     }
 }
@@ -260,13 +262,14 @@ void test_addHashTable_given_add_2_duplicate_key_expect_hashTable_update_value_t
         _hashMapAddInt(&table, (void *)data15, 15);
 
         //load value int 23 to bucket 15 (key 15)
-        hashMapAddInt(&table, 23, 15);
+        hashMapPutKeyIntDataInt(&table, 23, 15);
 
         //load value string "" to also bucket 15 (key15)
-        hashMapAddStr(&table, "Spangle call illi line", 15);
+        hashMapPutKeyInt(&table, "Spangle call illi line", 15);
     }
     Catch(ex)
     {
+        TEST_FAIL_MESSAGE("Exception was thrown!");
         dumpException(ex);
     }
 
@@ -274,4 +277,239 @@ void test_addHashTable_given_add_2_duplicate_key_expect_hashTable_update_value_t
     printf("string 1 = %s", (char *)(((Data *)(table.list[15].head->next->data))->value));
     TEST_ASSERT_EQUAL_STRING("Spangle call illi line", (char *)(((Data *)(table.list[15].head->next->data))->value));
     // TEST_ASSERT_EQUAL(15, *(int *)(((Data *)(table.list[15].tail->data))->value));
+}
+
+/**
+ * 
+ *    bucket
+ *    |0| 
+ *    |1|                             search key3     return value23
+ *    |2|                               ----->
+ *    |3| --- key3  ----  key12   
+ *    |4|      \            \
+ *           value23        value34
+ */
+void test_hashTableGet_given_key3_value_int23_key12_value_int34(void)
+{
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    Try
+    {
+        int dataInt23 = 23;
+        int dataKey3 = 3;
+        Data *data23 = dataCreate(&dataKey3, (void *)&dataInt23);
+        _hashMapAddInt(&table, (void *)data23, 3);
+        
+        int dataInt34 = 34;
+        int dataKey12 = 12;
+        Data *data34 = dataCreate(&dataKey12, (void *)&dataInt34);
+        _hashMapAddInt(&table, (void *)data34, 3);
+
+        TEST_ASSERT_EQUAL(23, *(int *)(((Data *)(table.list[3].head->data))->value));
+		TEST_ASSERT_EQUAL(3, *(int *)(((Data *)(table.list[3].head->data))->key));
+        TEST_ASSERT_EQUAL(34, *(int *)(((Data *)(table.list[3].head->next->data))->value));
+
+        void *dataReturn = hashMapSearchKeyInt(&table, 3);
+        TEST_ASSERT_NOT_NULL(dataReturn);
+        TEST_ASSERT_EQUAL(23, *(int *)((Data *)(((Item *)(dataReturn))->data))->value);
+    }
+    Catch(ex)
+    {
+        TEST_FAIL_MESSAGE("Exception was thrown!");
+        dumpException(ex);
+    }
+}
+
+/**
+ * 
+ *    bucket
+ *    |0| 
+ *    |1|                                      search key3     return "Jang"
+ *    |2|                                        ----->
+ *    |3| --- key12  ----  key5  ----  key8            
+ *    |4|      \            \            \
+ *           "stella"       "Jang"     "carol's"
+ */
+void test_hashTableSearch_given_key12_key5_key8_search_key3_expect_NO_CHANGED_KEY_NA_exception_thrown(void)
+{
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    Try
+    {
+        char *string1 = "stella";
+        int dataKey12 = 12;
+        Data *data1 = dataCreate(&dataKey12, (void *)string1);
+        _hashMapAddInt(&table, (void *)data1, 3);
+
+        char *string2 = "Jang";
+        int dataKey5 = 5;
+        Data *data2 = dataCreate(&dataKey5, (void *)string2);
+        _hashMapAddInt(&table, (void *)data2, 3);
+
+        char *string3 = "carol's";
+        int dataKey8 = 8;
+        Data *data3 = dataCreate(&dataKey8, (void *)string3);
+        _hashMapAddInt(&table, (void *)data3, 3);
+
+        void *dataReturn = hashMapSearchKeyInt(&table, 3);
+        TEST_FAIL_MESSAGE("expect key not available exception to be thrown!");
+    }
+    Catch(ex)
+    {
+        dumpException(ex);
+        TEST_ASSERT_EQUAL(3, ex->errorCode);
+    }
+}
+
+/**
+ * 
+ *    bucket
+ *    |0| 
+ *    |1|                                      search key3     return "Jang"
+ *    |2|                                        ----->
+ *    |3| --- key12  ----  key3  ----  key8            
+ *    |4|      \            \            \
+ *           "stella"       "Jang"     "carol's"
+ */
+void test_hashTableGet_given_key3_value_String1_key12_value_string2(void)
+{
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    Try
+    {
+        char *string1 = "stella";
+        int dataKey = 12;
+        Data *data1 = dataCreate(&dataKey, (void *)string1);
+        _hashMapAddInt(&table, (void *)data1, 3);
+
+        char *string2 = "Jang";
+        int dataKey3 = 3;
+        Data *data2 = dataCreate(&dataKey3, (void *)string2);
+        _hashMapAddInt(&table, (void *)data2, 3);
+
+        char *string3 = "carol's";
+        int dataKey8 = 8;
+        Data *data3 = dataCreate(&dataKey8, (void *)string3);
+        _hashMapAddInt(&table, (void *)data3, 3);
+
+        void *dataReturn = hashMapSearchKeyInt(&table, 3);
+        TEST_ASSERT_NOT_NULL(dataReturn);
+        TEST_ASSERT_EQUAL_STRING("Jang", (char *)((Data *)(((Item *)(dataReturn))->data))->value);
+    }
+    Catch(ex)
+    {
+        TEST_FAIL_MESSAGE("Exception was thrown!");
+        dumpException(ex);
+    }
+}
+
+/**
+ * 
+ *    bucket
+ *    |0| 
+ *    |1|                                      search key3     exception thrown
+ *    |2|                                        ----->
+ *    |3| --- key12  ----  key5  ----  key8            
+ *    |4|      \            \            \
+ *           "stella"       "Jang"     "carol's"
+ */
+void test_hashTableRemove_given_key12_key5_key8_remove_key3_expect_NO_CHANGED_KEY_NA_exception_thrown(void)
+{
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    Try
+    {
+        char *string1 = "stella";
+        int dataKey12 = 12;
+        Data *data1 = dataCreate(&dataKey12, (void *)string1);
+        _hashMapAddInt(&table, (void *)data1, 3);
+
+        char *string2 = "Jang";
+        int dataKey5 = 5;
+        Data *data2 = dataCreate(&dataKey5, (void *)string2);
+        _hashMapAddInt(&table, (void *)data2, 3);
+
+        char *string3 = "carol's";
+        int dataKey8 = 8;
+        Data *data3 = dataCreate(&dataKey8, (void *)string3);
+        _hashMapAddInt(&table, (void *)data3, 3);
+
+        hashMapRemoveKeyInt(&table, 3);
+        TEST_FAIL_MESSAGE("expect key not available exception to be thrown!");
+    }
+    Catch(ex)
+    {
+        TEST_ASSERT_EQUAL_STRING("stella", (char *)(((Data *)(table.list[3].head->data))->value));
+        TEST_ASSERT_EQUAL_STRING("Jang", (char *)(((Data *)(table.list[3].head->next->data))->value));
+        TEST_ASSERT_EQUAL_STRING("carol's", (char *)(((Data *)(table.list[3].head->next->next->data))->value));
+        TEST_ASSERT_EQUAL(3, ex->errorCode);
+        dumpException(ex);
+    }
+}
+
+/**
+ * 
+ *    bucket
+ *    |0|                                                                                                     
+ *    |1|                                                                              
+ *    |2|                                                                                        
+ *    |3| --- key12  ----  key3  ----  key8                                                                  
+ *    |4|      \            \            \                                                            
+ *           "stella"       "Jang"     "carol's"   
+ *           
+ *    -----
+ *        |        
+ *    remove key3
+ * 
+ *    |0|                                       
+ *    |1|                                       
+ *    |2|                                       
+ *    |3| --- key12  ----    key8     
+ *    |4|      \               \      
+ *          "stella"         "carol's"                                       
+ */
+void test_hashTableRemove_given_key12_key3_key8_on_bucket_3_remove_key3(void)
+{
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    Try
+    {
+        char *string1 = "stella";
+        int dataKey12 = 12;
+        Data *data1 = dataCreate(&dataKey12, (void *)string1);
+        _hashMapAddInt(&table, (void *)data1, 3);
+
+        char *string2 = "Jang";
+        int dataKey3 = 3;
+        Data *data2 = dataCreate(&dataKey3, (void *)string2);
+        _hashMapAddInt(&table, (void *)data2, 3);
+
+        char *string3 = "carol's";
+        int dataKey8 = 8;
+        Data *data3 = dataCreate(&dataKey8, (void *)string3);
+        _hashMapAddInt(&table, (void *)data3, 3);
+
+        hashMapRemoveKeyInt(&table, 3);
+
+        TEST_ASSERT_EQUAL_STRING("stella", (char *)(((Data *)(table.list[3].head->data))->value));
+        TEST_ASSERT_EQUAL_STRING("carol's", (char *)(((Data *)(table.list[3].head->next->data))->value));
+    }
+    Catch(ex)
+    {
+        TEST_FAIL_MESSAGE("Exception was thrown!");
+        dumpException(ex);
+    }
+}
+
+void test_hashTableAdd_given_key_string_stella_data_int_5(void)
+{
+    HashTable table;
+    hashMapInit(&table, 10, 3);
+
+    
 }

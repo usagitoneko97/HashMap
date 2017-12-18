@@ -71,7 +71,7 @@ Item* ListRemoveLinkedListByName(char* name, LinkedList *list){
   }
 }
 
-void listRemoveByKey(LinkedList *list, uint32_t key, Compare compareFunc){
+void listRemoveByKey(LinkedList *list, void *key, Compare compareFunc){
   //preserve the head
   Item *tempHead = list->head;
   Item *deleteHead = NULL;
@@ -82,16 +82,18 @@ void listRemoveByKey(LinkedList *list, uint32_t key, Compare compareFunc){
   }
   else
   {
-    while (prevL != NULL)
+    do
     {
-      if(compareFunc((void*)&(((Data *)(list->head->data))->key), (void*)&key) == 1){
+      if(compareFunc((void*)(((Data *)(list->head->data))->key), key) == 1){
         break;
       }
       prevL = list->head;
       list->head = list->head->next; //move to next item to search
-    }
+    }while (list->head != NULL);
     //succesfully found the name
-    if(prevL == NULL){
+    if(list->head == NULL){
+	  //restore the head
+	  list->head = tempHead;
       Throw(createException("key given not available in the hash", HASH_KEY_NA));
       return ;
     }
@@ -105,9 +107,9 @@ void listRemoveByKey(LinkedList *list, uint32_t key, Compare compareFunc){
   }
 }
 
-Item *listSearch(LinkedList list, uint32_t key, Compare compareFunc){
+Item *listSearch(LinkedList list, void *key, Compare compareFunc){
   while(list.head != NULL){
-    if (compareFunc((void*)&(((Data *)(list.head->data))->key), (void*)&key) == 1){
+    if (compareFunc((void*)(((Data *)(list.head->data))->key), key) == 1){
       return list.head;
     }
     list.head = list.head->next;

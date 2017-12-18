@@ -14,13 +14,20 @@ struct HashTable{
 
 #define _hashMapAddInt(table, data, index)  _hashMapAdd(table, data, index, compareKeyInt)
 
-#define hashMapSearchKeyInt(table, key)     hashMapSearch(table, key, compareKeyInt)
-#define hashMapRemoveKeyInt(table, key)     hashMapRemove(table, key, compareKeyInt)
+void *hashMapSearchKeyInt(HashTable *table, int key);
 
-#define hashMapPutKeyInt(table, value, key)                                      \
+void hashMapRemoveKeyInt(HashTable *table, int key);
+
+#define hashMapPutKeyIntDataInt(table, value, key)                               \
             int valueVar = value; int keyVar = key;                              \
-            hashMapAdd(table, (void *)&valueVar, (void *)&keyVar, compareKeyInt)    
-#define hashMapPutKeyString(table, value, key) hashMapPut(table, (void *)value, (void *)key, compareKeyString)
+            hashMapAdd(table, (void *)&valueVar, (void *)&keyVar, compareKeyInt)
+
+//add generic data type
+#define hashMapPutKeyInt(table, value, key)                                      \
+            int keyIntVar = key;                                                 \
+            hashMapAdd(table, (void *)value, (void *)&keyVar, compareKeyInt)
+
+#define hashMapPutKeyString(table, value, key) hashMapAdd(table, (void *)value, (void *)key, compareKeyStr)
 
 void hashMapInit(HashTable *table, int size, int sizeFactor);
 void _hashMapAdd(HashTable *table, void *data, int index, Compare compareFunc);
