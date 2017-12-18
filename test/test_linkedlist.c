@@ -147,23 +147,4 @@ void test_removeLinkedList_ali_abu_baba_remove_abu_expect_ali_baba(void){
   TEST_ASSERT_EQUAL_PTR(&itemBaba, list.tail);
   TEST_ASSERT_EQUAL(2, list.len);
 }
-// void test_removeLinkedList_ali_abu_remove_abu_expect_ali(void){
-//   LinkedList list;
-//   ListInit(&list);
-//   ListAddLinkedList(&list, &itemAli);
-//   ListAddLinkedList(&list, &itemAbu);
-//   ListRemoveLinkedListByName("abu", &list);
-//   TEST_ASSERT_EQUAL(&itemAli, list.head);
-//   TEST_ASSERT_NULL(itemAli.next);
-//
-//   TEST_ASSERT_EQUAL(1, list.len);
-// }
-// void test_removeLinkedList_ali_remove_ali_expect_null(void){
-//   LinkedList list;
-//   ListInit(&list);
-//   ListAddLinkedList(&list, &itemAli);
-//   ListRemoveLinkedListByName("ali", &list);
-//   TEST_ASSERT_NULL(list.head);
-//
-//   TEST_ASSERT_EQUAL(0, list.len);
-// }
+
